@@ -42,9 +42,13 @@ public class Main {
 
         // Frame2 Panel Elements - Text Field for file name input
         JTextField fileNameInput = new JTextField(20);
+        JTextField formatInput = new JTextField(6);
         JLabel saveLabel = new JLabel("File Name: ");
+        JLabel formatLabel = new JLabel("File Format: ");
         frame2.add(saveLabel);
         frame2.add(fileNameInput);
+        frame2.add(formatLabel);
+        frame2.add(formatInput);
 
         // Frame3 Panel Elements - Save and Load buttons
         JButton saveButton = new JButton("Save");
@@ -54,17 +58,18 @@ public class Main {
 
         // Button action listener that will trigger if the user clicks on saveButton
         saveButton.addActionListener(new ActionListener() {
-            String format = ".docx"; // file format (will become interchangeable by user after further testing)
+            //String format = ".docx"; // default file format
+            //String format = "."+(formatInput.getText());
             public void actionPerformed(ActionEvent actionEvent) {
             File doc = null;
             FileWriter out = null;
 
             try {
-                doc = new File(fileNameInput.getText()+"." +format); // creates a new document with the name given by the user and the format
+                doc = new File(fileNameInput.getText()+"."+formatInput.getText()); // creates a new document with the name given by the user and the format
                 out = new FileWriter(doc);
                 out.write(textInput.getText()); // writes the text in the main editor to the file
                 out.close(); // closes the file writer
-                JOptionPane.showMessageDialog(frame, fileNameInput.getText() + format + " saved successfully."); // informs the user that the file was saved successfully
+                JOptionPane.showMessageDialog(frame, fileNameInput.getText() + "." + formatInput.getText() + " saved successfully."); // informs the user that the file was saved successfully
             }
             catch (FileNotFoundException e) {
                 e.printStackTrace();
