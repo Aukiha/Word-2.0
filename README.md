@@ -1,4 +1,5 @@
-A Java document editor.
+# A Java document editor.
 
+## Designed to be a simple document editor with the basic features of any text editor including but not limited to: saving and loading files, searching through texts, and sorting through texts. 
 
-Designed to be a simple document editor with the basic features of any text editor including but not limited to: saving and loading files, searching through texts, and sorting through texts. 
+**Written in Java 1.8**
