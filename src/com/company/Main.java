@@ -1,6 +1,5 @@
 package com.company;
 
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -10,8 +9,6 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.io.*;
 
 public class Main {
@@ -43,6 +40,7 @@ public class Main {
         JPanel frame3 = new JPanel();
         frame3.setLayout(new FlowLayout());
 
+        // JPanel that will hold the file directory features
         JPanel frame4 = new JPanel();
         frame4.setLayout(new FlowLayout());
 
@@ -167,8 +165,8 @@ public class Main {
 
         }); // End of function
 
+        // update file directory button function
         updateDirButton.addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent actionEvent) {
                 filesList.setText("");
                 File list = new File(".");
