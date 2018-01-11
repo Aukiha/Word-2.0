@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.Scanner;
 
 public class Main {
 
@@ -82,18 +83,22 @@ public class Main {
             public void insertUpdate(DocumentEvent documentEvent) {
                 if(fileNameInput.getText().equals("")) {
                     saveButton.setEnabled(false);
+                    loadButton.setEnabled(false);
                 }
                 else {
                     saveButton.setEnabled(true);
+                    loadButton.setEnabled(true);
                 }
             }
 
             public void removeUpdate(DocumentEvent documentEvent) {
                 if(fileNameInput.getText().equals("")) {
                     saveButton.setEnabled(false);
+                    loadButton.setEnabled(false);
                 }
                 else {
                     saveButton.setEnabled(true);
+                    loadButton.setEnabled(true);
                 }
 
             }
@@ -101,9 +106,11 @@ public class Main {
             public void changedUpdate(DocumentEvent documentEvent) {
                 if(fileNameInput.getText().equals("")) {
                     saveButton.setEnabled(false);
+                    loadButton.setEnabled(false);
                 }
                 else {
                     saveButton.setEnabled(true);
+                    loadButton.setEnabled(true);
                 }
             }
         });
@@ -113,18 +120,22 @@ public class Main {
             public void insertUpdate(DocumentEvent documentEvent) {
                 if(formatInput.getText().equals("")) {
                     saveButton.setEnabled(false);
+                    loadButton.setEnabled(false);
                 }
                 else {
                     saveButton.setEnabled(true);
+                    loadButton.setEnabled(true);
                 }
             }
 
             public void removeUpdate(DocumentEvent documentEvent) {
                 if(formatInput.getText().equals("")) {
                     saveButton.setEnabled(false);
+                    loadButton.setEnabled(false);
                 }
                 else {
                     saveButton.setEnabled(true);
+                    loadButton.setEnabled(true);
                 }
 
             }
@@ -132,9 +143,11 @@ public class Main {
             public void changedUpdate(DocumentEvent documentEvent) {
                 if(formatInput.getText().equals("")) {
                     saveButton.setEnabled(false);
+                    loadButton.setEnabled(false);
                 }
                 else {
                     saveButton.setEnabled(true);
+                    loadButton.setEnabled(true);
                 }
             }
         });
@@ -160,10 +173,28 @@ public class Main {
             }
 
             }
-
-
-
         }); // End of function
+
+        // load button function to load files
+        loadButton.addActionListener(new ActionListener() {
+            String doc = ""; // document string that will be set in the text area
+            public void actionPerformed(ActionEvent actionEvent) {
+             try {
+                 FileReader read = new FileReader(fileNameInput.getText() + "." + formatInput.getText()); // loads the file with the given name and file format
+                 Scanner scanMan = new Scanner(read);
+                 while(scanMan.hasNextLine()) { // if there is a next line in the file
+                     String temp = scanMan.nextLine() + "\n"; // add the next line to the temp string
+                     doc += temp; // add the temp string to the doc string
+                 }
+                 textInput.setText(doc); // sets the loaded document string in the text area
+                 doc = ""; // resets the document string
+             }
+             catch (FileNotFoundException e) {
+                 JOptionPane.showMessageDialog(frame, "File Not Found.");
+                 e.printStackTrace();
+             }
+            }
+        }); // end of function
 
         // update file directory button function
         updateDirButton.addActionListener(new ActionListener() {
@@ -178,7 +209,7 @@ public class Main {
                     }
                 }
             }
-        });
+        }); // end of function
 
 
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
