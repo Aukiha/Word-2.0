@@ -66,6 +66,12 @@ public class Main {
         fileInfoInputFrame.setTitle("File Info");
         fileInfoInputFrame.setLayout(new BoxLayout(fileInfoInputFrame.getContentPane(), 3));
 
+        // File Directory JFrame
+        JFrame dirFrame = new JFrame();
+        dirFrame.setSize(400, 400);
+        dirFrame.setTitle("Files in Folder");
+        dirFrame.setLayout(new BoxLayout(dirFrame.getContentPane(), 3));
+
         // Menu Bar
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Options");
@@ -109,8 +115,8 @@ public class Main {
         loadButtonPanel.setLayout(new FlowLayout());
 
         // JPanel that will hold the file directory features
-        JPanel frame4 = new JPanel();
-        frame4.setLayout(new FlowLayout());
+        JPanel dirPanel = new JPanel();
+        dirPanel.setLayout(new FlowLayout());
 
         // Doc Info Panels
         JPanel lineCountPanel = new JPanel();
@@ -136,20 +142,29 @@ public class Main {
 
         // Load Panel Elements
         JButton loadButton = new JButton("Load");
-        loadPanel.add(inputLabel);
-        loadPanel.add(fileNameInput);
-        loadPanel.add(formatLabel);
-        loadPanel.add(formatInput);
+        JTextField fileNameInputLoad = new JTextField(20);
+        JTextField formatInputLoad = new JTextField(6);
+        JLabel inputLabelLoad = new JLabel("File Name: ");
+        JLabel formatLabelLoad = new JLabel("File Format: ");
+
+        loadPanel.add(inputLabelLoad);
+        loadPanel.add(fileNameInputLoad);
+        loadPanel.add(formatLabelLoad);
+        loadPanel.add(formatInputLoad);
 
         // Load Button Panel Elements
         loadButtonPanel.add(loadButton);
 
         // File Info Input Panel Elements
         JButton fileInfoButton = new JButton("File Info");
-        docInfoPanel.add(inputLabel);
-        docInfoPanel.add(fileNameInput);
-        docInfoPanel.add(formatLabel);
-        docInfoPanel.add(formatInput);
+        JLabel infoNameLabel = new JLabel("File Name:");
+        JLabel infoFormatLabel = new JLabel("Format:");
+        JTextField infoNameInput = new JTextField(20);
+        JTextField infoFormatInput = new JTextField(6);
+        docInfoPanel.add(infoNameLabel);
+        docInfoPanel.add(infoNameInput);
+        docInfoPanel.add(infoFormatLabel);
+        docInfoPanel.add(infoFormatInput);
 
         // File Info Input Button Panel Elements
         docInfoButtonPanel.add(fileInfoButton);
@@ -164,13 +179,13 @@ public class Main {
         // Save Button Panel Elements
         saveButtonPanel.add(saveButton);
 
-        // Frame4 Panel Elements
+        // File Directory Panel Elements
         JButton updateDirButton = new JButton("Update List");
         JLabel filesInDirectoryLabel = new JLabel("Files in current directory: ");
         JTextArea filesList = new JTextArea(10, 10);
-        frame4.add(filesInDirectoryLabel);
-        frame4.add(updateDirButton);
-        frame4.add(filesList);
+        dirPanel.add(filesInDirectoryLabel);
+        dirPanel.add(updateDirButton);
+        dirPanel.add(filesList);
 
         // Document Info Elements
         JLabel lineCount = new JLabel("Number of Lines: ");
@@ -263,6 +278,8 @@ public class Main {
             }
         });
 
+        //          Button Functions
+
         // Button action listener that will trigger if the user clicks on saveButton
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
@@ -294,7 +311,7 @@ public class Main {
             String doc = ""; // document string that will be set in the text area
             public void actionPerformed(ActionEvent actionEvent) {
              try {
-                 FileReader read = new FileReader(fileNameInput.getText() + "." + formatInput.getText()); // loads the file with the given name and file format
+                 FileReader read = new FileReader(fileNameInputLoad.getText() + "." + formatInputLoad.getText()); // loads the file with the given name and file format
                  Scanner scanMan = new Scanner(read);
                  while(scanMan.hasNextLine()) { // if there is a next line in the file
                      String temp = scanMan.nextLine() + "\n"; // add the next line to the temp string
@@ -302,8 +319,8 @@ public class Main {
                  }
                  textInput.setText(doc); // sets the loaded document string in the text area
                  doc = ""; // resets the document string
-                 lastTypedName = fileNameInput.getText();
-                 lastTypedFormat = formatInput.getText();
+                 lastTypedName = fileNameInputLoad.getText();
+                 lastTypedFormat = formatInputLoad.getText();
              }
              catch (FileNotFoundException e) {
                  JOptionPane.showMessageDialog(frame, "File Not Found.");
@@ -311,18 +328,6 @@ public class Main {
              }
             }
         }); // end of function
-
-        fileInfoMenu.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                if((lastTypedName.equals("")) && (lastTypedFormat.equals(""))) { // checks if a valid entry was made before
-                }
-                else { // if there was a previous valid entry, fill the entry fields with the previous entry
-                    fileNameInput.setText(lastTypedName);
-                    formatInput.setText(lastTypedFormat);
-                }
-                fileInfoInputFrame.setVisible(true); // open the info input frame prompt
-            }
-        });
 
         // file info function
         fileInfoButton.addActionListener(new ActionListener() {
@@ -368,6 +373,9 @@ public class Main {
             }
         }); // end of function
 
+
+        //          Menu Functions
+
         // save menu button function
         saveMenu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
@@ -390,6 +398,34 @@ public class Main {
                     fileNameInput.setText(lastTypedName);
                     formatInput.setText(lastTypedFormat);
                 }
+                loadFrame.setVisible(true);
+            }
+        });
+
+        fileInfoMenu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                if((lastTypedName.equals("")) && (lastTypedFormat.equals(""))) { // checks if a valid entry was made before
+                }
+                else { // if there was a previous valid entry, fill the entry fields with the previous entry
+                    fileNameInput.setText(lastTypedName);
+                    formatInput.setText(lastTypedFormat);
+                }
+                fileInfoInputFrame.setVisible(true); // open the info input frame prompt
+            }
+        });
+
+        dirMenu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                filesList.setText("");
+                File list = new File(".");
+                File[] listA = list.listFiles();
+                for(int i = 0; i < listA.length-1; i++) {
+                    File temp = listA[i];
+                    if(temp.isFile() && (temp.getName().endsWith(".docx") || temp.getName().endsWith(".txt") || temp.getName().endsWith(".md"))) {
+                        filesList.append(temp + "\n");
+                    }
+                }
+                dirFrame.setVisible(true);
             }
         });
 
@@ -402,7 +438,7 @@ public class Main {
 
         optionsFrame.add(frame2);
         optionsFrame.add(frame3);
-        optionsFrame.add(frame4);
+        optionsFrame.add(dirPanel);
         optionsFrame.pack();
 
         fileInfoFrame.add(lineCountPanel);
@@ -413,6 +449,9 @@ public class Main {
         fileInfoInputFrame.add(docInfoPanel);
         fileInfoInputFrame.add(docInfoButtonPanel);
         fileInfoInputFrame.pack();
+
+        dirFrame.add(dirPanel);
+        dirFrame.pack();
 
         saveFrame.add(savePanel);
         saveFrame.add(saveButtonPanel);
