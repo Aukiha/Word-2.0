@@ -24,8 +24,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        lastTypedName = "";
-        lastTypedFormat = "";
+        lastTypedName = ""; // last typed file name
+        lastTypedFormat = ""; // last typed file format
 
 
         //          JFrames
@@ -204,6 +204,9 @@ public class Main {
         charCountPanel.add(charCount);
         charCountPanel.add(charCountField);
 
+
+        //          Input field functions
+
         // checks if the file name input field is empty
         fileNameInput.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent documentEvent) {
@@ -278,6 +281,7 @@ public class Main {
             }
         });
 
+
         //          Button Functions
 
         // Button action listener that will trigger if the user clicks on saveButton
@@ -318,6 +322,7 @@ public class Main {
                      doc += temp; // add the temp string to the doc string
                  }
                  textInput.setText(doc); // sets the loaded document string in the text area
+                 JOptionPane.showMessageDialog(frame, "File Loaded Successfully");
                  doc = ""; // resets the document string
                  lastTypedName = fileNameInputLoad.getText();
                  lastTypedFormat = formatInputLoad.getText();
@@ -430,33 +435,39 @@ public class Main {
         });
 
 
+        // Main Applicaton Frame
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // if the main frame is closed, close the entire application
-
         mainFrame.add(frame);
         mainFrame.pack();
         mainFrame.setVisible(true);
 
+        // Options Frame (not used)
         optionsFrame.add(frame2);
         optionsFrame.add(frame3);
         optionsFrame.add(dirPanel);
         optionsFrame.pack();
 
+        // Document Info Frame
         fileInfoFrame.add(lineCountPanel);
         fileInfoFrame.add(wordCountPanel);
         fileInfoFrame.add(charCountPanel);
         fileInfoFrame.pack();
 
+        // Document Info Input Frame
         fileInfoInputFrame.add(docInfoPanel);
         fileInfoInputFrame.add(docInfoButtonPanel);
         fileInfoInputFrame.pack();
 
+        // Folder Info Frame
         dirFrame.add(dirPanel);
         dirFrame.pack();
 
+        // Save Frame
         saveFrame.add(savePanel);
         saveFrame.add(saveButtonPanel);
         saveFrame.pack();
 
+        // Load Frame
         loadFrame.add(loadPanel);
         loadFrame.add(loadButtonPanel);
         loadFrame.pack();
