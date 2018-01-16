@@ -72,6 +72,12 @@ public class Main {
         dirFrame.setTitle("Files in Folder");
         dirFrame.setLayout(new BoxLayout(dirFrame.getContentPane(), 3));
 
+        // Help Menu JFrame
+        JFrame helpTextFrame = new JFrame();
+        helpTextFrame.setSize(400,400);
+        helpTextFrame.setTitle("Help");
+        helpTextFrame.setLayout(new BoxLayout(helpTextFrame.getContentPane(), 3));
+
         // Menu Bar
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Options");
@@ -79,10 +85,13 @@ public class Main {
         JMenuItem loadMenu = new JMenuItem("Load");
         JMenuItem fileInfoMenu = new JMenuItem("File Info");
         JMenuItem dirMenu = new JMenuItem("Files in Folder");
+        JMenuItem helpMenu = new JMenuItem("Help");
         menu.add(saveMenu);
         menu.add(loadMenu);
         menu.add(fileInfoMenu);
         menu.add(dirMenu);
+        menu.addSeparator();
+        menu.add(helpMenu);
         menuBar.add(menu);
         mainFrame.setJMenuBar(menuBar);
 
@@ -131,6 +140,10 @@ public class Main {
         docInfoPanel.setLayout(new FlowLayout());
         JPanel docInfoButtonPanel = new JPanel();
         docInfoButtonPanel.setLayout(new FlowLayout());
+
+        // Help Menu Panels
+        JPanel helpMenuPanel = new JPanel();
+        helpMenuPanel.setLayout(new FlowLayout());
 
         // Frame Panel Elements - Text Field for user input
         JTextArea textInput = new JTextArea(30, 80);
@@ -203,6 +216,16 @@ public class Main {
         wordCountPanel.add(wordCountField);
         charCountPanel.add(charCount);
         charCountPanel.add(charCountField);
+
+        // Help Menu Elements
+        JTextArea helpText = new JTextArea(30, 40);
+        helpText.setWrapStyleWord(true);
+        helpText.setLineWrap(true);
+        helpText.setEditable(false);
+        JScrollPane scrollHelpText = new JScrollPane(helpText);
+        scrollHelpText.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        helpText.setText("To create documents, just start typing in the main text area, and then access the save/load functions in the top menu bar to save your work. \nYou can also use the document info function to find out information about existing documents, and then Files in Folder function to list all the files in the current directory.");
+        helpMenuPanel.add(scrollHelpText);
 
 
         //          Input field functions
@@ -323,6 +346,7 @@ public class Main {
                  }
                  textInput.setText(doc); // sets the loaded document string in the text area
                  JOptionPane.showMessageDialog(frame, "File Loaded Successfully");
+                 loadFrame.setVisible(false);
                  doc = ""; // resets the document string
                  lastTypedName = fileNameInputLoad.getText();
                  lastTypedFormat = formatInputLoad.getText();
@@ -334,15 +358,16 @@ public class Main {
             }
         }); // end of function
 
-        // file info function
+        // file info button function
         fileInfoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 fileInfoInputFrame.setVisible(false);
                 int numOfLines = 0;
                 int numOfWord = 0;
                 int numOfCharacters = 0;
+                /*
                 try {
-                    FileReader read = new FileReader(fileNameInput.getText() + "." + formatInput.getText());
+                    FileReader read = new FileReader(infoNameInput.getText() + "." + infoFormatInput.getText());
                     Scanner scanMan = new Scanner(read);
                     while(scanMan.hasNextLine()) {
                         numOfLines++;
@@ -350,9 +375,9 @@ public class Main {
                         numOfCharacters += currentLine.length();
                         numOfWord += new StringTokenizer(currentLine, " ").countTokens();
                     }
-                    lineCountField.setText(Integer.toString(numOfLines));
-                    wordCountField.setText(Integer.toString(numOfWord));
-                    charCountField.setText(Integer.toString(numOfCharacters));
+                    lineCountField.setText(Integer.toString(doc.getLengthLine()));
+                    wordCountField.setText(Integer.toString(doc.getLengthWord()));
+                    charCountField.setText(Integer.toString(doc.getLengthChar()));
                     fileInfoFrame.pack();
                     fileInfoFrame.setVisible(true);
                 }
@@ -360,6 +385,15 @@ public class Main {
                     JOptionPane.showMessageDialog(frame, "File Not Found.");
                     e.printStackTrace();
                 }
+                */
+                String name = infoNameInput.getText();
+                String format = infoFormatInput.getText();
+                document doc = new document(name, format, fileInfoInputFrame);
+                lineCountField.setText(Integer.toString(doc.getLengthLine()));
+                wordCountField.setText(Integer.toString(doc.getLengthWord()));
+                charCountField.setText(Integer.toString(doc.getLengthChar()));
+                fileInfoFrame.pack();
+                fileInfoFrame.setVisible(true);
             }
         });
 
@@ -375,6 +409,13 @@ public class Main {
                         filesList.append(temp + "\n");
                     }
                 }
+            }
+        }); // end of function
+
+        // help button function to display help menu
+        helpMenu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                helpTextFrame.setVisible(true);
             }
         }); // end of function
 
@@ -471,5 +512,10 @@ public class Main {
         loadFrame.add(loadPanel);
         loadFrame.add(loadButtonPanel);
         loadFrame.pack();
+
+        // Help Frame
+        helpTextFrame.add(helpMenuPanel);
+        helpTextFrame.pack();
     }
 }
+
