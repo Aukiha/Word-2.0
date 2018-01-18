@@ -365,6 +365,8 @@ public class Main {
                 int numOfLines = 0;
                 int numOfWord = 0;
                 int numOfCharacters = 0;
+
+                // Lest we forget the previous method
                 /*
                 try {
                     FileReader read = new FileReader(infoNameInput.getText() + "." + infoFormatInput.getText());
@@ -386,6 +388,7 @@ public class Main {
                     e.printStackTrace();
                 }
                 */
+                
                 String name = infoNameInput.getText();
                 String format = infoFormatInput.getText();
                 document doc = new document(name, format, fileInfoInputFrame);
